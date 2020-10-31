@@ -2,27 +2,25 @@ import * as fs from "fs";
 import * as path from "path";
 import * as BSON from "bson";
 import * as UBJSON from "@shelacek/ubjson";
-import { settings } from "./settings";
-import { DataBaseStructure } from "./types";
 
 const config: {
-	mode: string;
-	tempData: Array<DataBaseStructure>;
+	mode: "JSON" | "BSON" | "UBJSON";
 	interval: any;
 	DB_Dir: string;
 	DB_Path: string;
+	tempData: Array<any>;
 } = {
+	mode: "JSON",
+	interval: null,
 	DB_Dir: "Kids_DB_Data",
 	DB_Path: "",
-	interval: null,
-	mode: `JSON`,
 	tempData: [],
 };
 
 const encoding = {
 	json: {
 		encode: async function (data: any) {
-			return Buffer.from(await JSON.stringify(data));
+			return Buffer.from(JSON.stringify(data));
 		},
 		decode: async function (data: any) {
 			return await JSON.parse(data);
@@ -38,8 +36,7 @@ const encoding = {
 	},
 	ubjson: {
 		encode: async function (data: any) {
-			let UBJSON_Data = UBJSON.encode(data);
-			return Buffer.from(UBJSON_Data);
+			return Buffer.from(UBJSON.encode(data));
 		},
 		decode: async function (data: any) {
 			return await UBJSON.decode(data);
@@ -78,10 +75,9 @@ const internal = {
 	},
 	createDB: async (DB_Name: string) => {
 		if ((await internal.checkExistingDBDir()) === true) {
-			
 		} else {
 		}
 	},
 };
 
-export { fs, path, config, settings, PossibleEncoding, PossibleModes };
+export { fs, path, config, PossibleEncoding, PossibleModes };
