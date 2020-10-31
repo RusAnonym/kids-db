@@ -3,7 +3,7 @@ import * as path from "path";
 import * as BSON from "bson";
 import * as UBJSON from "@shelacek/ubjson";
 import { settings } from "./settings";
-import { ElementInDB, DataBaseStructure } from "./types";
+import { DataBaseStructure } from "./types";
 
 const config: {
 	mode: string;
@@ -69,6 +69,19 @@ const PossibleModes = PossibleEncoding.map(function (x) {
 	return x.ext;
 });
 
-
+const internal = {
+	checkExistingDBDir: async () => {
+		return fs.existsSync(config.DB_Path + config.DB_Dir);
+	},
+	createDBDir: async () => {
+		return fs.mkdirSync(config.DB_Path + config.DB_Dir);
+	},
+	createDB: async (DB_Name: string) => {
+		if ((await internal.checkExistingDBDir()) === true) {
+			
+		} else {
+		}
+	},
+};
 
 export { fs, path, config, settings, PossibleEncoding, PossibleModes };
